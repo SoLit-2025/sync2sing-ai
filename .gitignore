@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VSCode
+.vscode/
+*.code-workspace
+!.vscode/settings.json
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Audio / Data files
+*.wav
+*.mp3
+*.flac
+*.npy
+*.npz
+*.csv
+*.json
+
+# Environment
+.env
+.venv/
+venv/
+env/
+

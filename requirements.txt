@@ -1,0 +1,15 @@
+librosa
+numpy
+scipy
+matplotlib
+scikit-learn
+pandas
+tqdm
+tensorflow
+torch
+torchaudio
+notebook
+noisereduce
+fastapi
+uvicorn
+#spleeter
