@@ -20,6 +20,11 @@ __pycache__/
 *.npz
 *.csv
 *.json
+<<<<<<< Updated upstream
+=======
+*.pkl
+*.jpg
+>>>>>>> Stashed changes
 
 # Environment
 .env
