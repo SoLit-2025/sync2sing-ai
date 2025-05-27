@@ -3,9 +3,11 @@
   "editor.formatOnSave": true,
   "python.linting.enabled": true,
   "python.linting.flake8Enabled": true,
-  "python.sortImports.args": ["--profile", "black"],
+  "python.sortImports.args": [
+    "--profile",
+    "black"
+  ],
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
-    
   }
 }
