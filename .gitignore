@@ -20,11 +20,8 @@ __pycache__/
 *.npz
 *.csv
 *.json
-<<<<<<< Updated upstream
-=======
 *.pkl
 *.jpg
->>>>>>> Stashed changes
 
 # Environment
 .env
@@ -32,3 +29,7 @@ __pycache__/
 venv/
 env/
 
+# data 
+data/**
+!data/**/
+!data/**/.gitkeep
