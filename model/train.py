@@ -1,3 +1,5 @@
+import os
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -9,6 +11,7 @@ import os
 import datetime
 import torch.multiprocessing
 import torch
+
 
 print(torch.__version__)  # PyTorch 버전 확인
 print(torch.cuda.is_available())  # CUDA 사용 가능 여부 (True면 GPU 사용 가능)
@@ -23,7 +26,7 @@ os.makedirs(SAVE_DIR, exist_ok=True)
 def main():
     # 하이퍼파라미터 설정
     BATCH_SIZE = 32
-    NUM_EPOCHS = 50
+    NUM_EPOCHS = 100
     LEARNING_RATE = 0.001
     
 
