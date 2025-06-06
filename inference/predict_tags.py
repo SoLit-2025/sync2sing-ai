@@ -10,7 +10,7 @@ if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 from model.cnn_model import AnnotatedVocalSetCNN
-from audio_processor import AudioPreprocessor
+from inference.audio_processor import AudioPreprocessor
 
 class TagPredictor:
     def __init__(self, model_path, label_mapping):
