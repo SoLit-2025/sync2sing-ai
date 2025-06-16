@@ -21,10 +21,8 @@ __pycache__/
 *.csv
 *.json
 *.pkl
-<<<<<<< HEAD
 *.jpg
-=======
->>>>>>> develop
+*.png
 
 # Environment
 .env
@@ -35,9 +33,4 @@ env/
 # data 
 data/**
 !data/**/
-<<<<<<< HEAD
 !data/**/.gitkeep
-=======
-!data/**/.gitkeep
-
->>>>>>> develop
