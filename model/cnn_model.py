@@ -17,7 +17,6 @@ class AttentionLayer(nn.Module):
         weights = torch.softmax(self.attention(x), dim=1)  # (batch_size, seq_len, 1)
         return (x * weights).sum(dim=1)  # (batch_size, in_dim)
 
-# 기존 모델 수정
 class AnnotatedVocalSetCNN(nn.Module):
     def __init__(self, num_classes):
         super().__init__()
@@ -42,7 +41,6 @@ class AnnotatedVocalSetCNN(nn.Module):
             nn.MaxPool2d((2,2)),  # → (128, 16, 32)
         )
         
-        # Global Average Pooling 제거 → Attention으로 대체
         self.attention = AttentionLayer(in_dim=128)  # in_dim=128 (채널 수)
         
         # Fully Connected
@@ -60,5 +58,4 @@ class AnnotatedVocalSetCNN(nn.Module):
         # Attention 적용
         x = self.attention(x)  # 출력 형태: (batch, 128)
         
-        # 최종 분류
         return self.fc(x)
