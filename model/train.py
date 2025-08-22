@@ -1,5 +1,8 @@
 import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
+import sys
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, PROJECT_ROOT)  
 import torch
 import torch.nn as nn
 import torch.optim as optim
