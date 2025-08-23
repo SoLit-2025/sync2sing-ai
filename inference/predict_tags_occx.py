@@ -9,6 +9,13 @@ class TagPredictorONNX:
         self.session = ort.InferenceSession(model_path)
         self.preprocessor = AudioPreprocessor()
 
+    def _softmax(self, x):
+        x = np.asarray(x, dtype=np.float32)
+        x = x.reshape(-1)
+        x = x - np.max(x)
+        ex = np.exp(x)
+        return ex / (np.sum(ex) + 1e-12)
+
     def predict(self, audio_path, top_k=3):
         """
         - audio_path: .wav 파일 경로
@@ -26,6 +33,7 @@ class TagPredictorONNX:
                 input_array = np.expand_dims(np.expand_dims(mel, axis=0), axis=0).astype(np.float32)
                 ort_inputs = {self.session.get_inputs()[0].name: input_array}
                 prob = self.session.run(None, ort_inputs)[0]  # shape: (1, 클래스 수)
+                prob = self._softmax(prob)
                 predictions.append(prob)
 
             # 3. 결과 집계

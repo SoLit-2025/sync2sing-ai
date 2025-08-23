@@ -9,7 +9,7 @@ LABEL_MAPPING = {
     }
 
 model = AnnotatedVocalSetCNN(num_classes=len({v:k for k,v in LABEL_MAPPING.items()}))
-model.load_state_dict(torch.load('weights/2025-06-03_00-03/best_model.pth', map_location='cpu'))
+model.load_state_dict(torch.load('weights/2025-06-11_17-22/best_model.pth', map_location='cpu'))
 model.eval()
 
 dummy_input = torch.randn(1, 1, 128, 258)
