@@ -8,29 +8,24 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-from inference.predict_tags import TagPredictor
+from inference.predict_tags_occx import TagPredictorONNX
 
 router = APIRouter(prefix="/ai")
 
-
 class VoiceAnalysisRequest(BaseModel):
     s3_uri: str
-
 
 class VoiceTypeResult(BaseModel):
     type: str
     ratio: float
 
-
 class VoiceAnalysisData(BaseModel):
     top_voice_types: List[VoiceTypeResult]
-
 
 class VoiceAnalysisResponse(BaseModel):
     status: int
     message: str
     data: VoiceAnalysisData
-
 
 @router.post("/voice-analysis", response_model=VoiceAnalysisResponse)
 async def analyze_voice(request: VoiceAnalysisRequest):
@@ -41,9 +36,9 @@ async def analyze_voice(request: VoiceAnalysisRequest):
         'straight': 12, 'trill': 13, 'vibrato': 14, 'vocal_fry': 15
     }
 
-    model_path = "weights/2025-06-03_00-03/best_model.pth"
+    model_path = "weights/model.onnx"
     if not os.path.exists(model_path):
-        raise FileNotFoundError(f"모델 파일을 찾을 수 없습니다: {model_path}")
+        raise FileNotFoundError(f"ONNX 모델 파일을 찾을 수 없습니다: {model_path}")
 
     try:
         response = requests.get(request.s3_uri)
@@ -56,7 +51,7 @@ async def analyze_voice(request: VoiceAnalysisRequest):
         tmp_file_path = tmp_file.name
 
     try:
-        predictor = TagPredictor(model_path=model_path, label_mapping=LABEL_MAPPING)
+        predictor = TagPredictorONNX(model_path=model_path, label_mapping=LABEL_MAPPING)
         result = predictor.predict(tmp_file_path)
 
         result_objs = [
