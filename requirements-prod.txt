@@ -1,0 +1,7 @@
+librosa
+noisereduce
+numpy
+pydub
+fastapi
+uvicorn
+onnxruntime

@@ -20,6 +20,9 @@ __pycache__/
 *.npz
 *.csv
 *.json
+*.pkl
+*.jpg
+*.png
 
 # Environment
 .env
@@ -27,3 +30,7 @@ __pycache__/
 venv/
 env/
 
+# data 
+data/**
+!data/**/
+!data/**/.gitkeep
