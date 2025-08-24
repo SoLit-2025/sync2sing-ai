@@ -52,7 +52,6 @@ jobs:
               --log-driver json-file \
               --log-opt max-size=10m \
               --log-opt max-file=3 \
-              -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
               ${{ secrets.DOCKER_IMAGE_NAME }}:prod
 
             for i in {1..20}; do
