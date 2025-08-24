@@ -84,7 +84,7 @@ if __name__ == "__main__":
         'vocal_fry': 15
     }
 
-    model_path = "weights/2025-06-03_00-03/best_model.pth"
+    model_path = "weights/2025-06-11_17-22/best_model.pth"
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"모델 파일을 찾을 수 없습니다: {model_path}")
     
