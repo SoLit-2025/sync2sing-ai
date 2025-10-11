@@ -10,14 +10,6 @@ if PROJECT_ROOT not in sys.path:
 
 from inference.predict_tags_occx import TagPredictorONNX
 
-try:
-    from inference.predict_tags_onnx_aihub import VocalFeaturePredictorONNX
-except ImportError:
-    # 에러 방지용 더미 클래스
-    class VocalFeaturePredictorONNX:
-        def __init__(self, model_path): pass
-        def predict_ratios(self, audio_path): return {"bending": 0, "vibrt": 0, "breath": 0}
-
 router = APIRouter(prefix="/ai")
 
 class VoiceAnalysisRequest(BaseModel):
@@ -74,64 +66,3 @@ async def analyze_voice(request: VoiceAnalysisRequest):
         )
     finally:
         os.remove(tmp_file_path)
-
-
-class VocalFeaturesResponseData(BaseModel):
-    bending: float
-    vibrt: float
-    breath: float
-
-class VocalFeaturesResponse(BaseModel):
-    status: int
-    message: str
-    data: VocalFeaturesResponseData
-
-@router.post("/voice-analysis-aihub", response_model=VocalFeaturesResponse)
-async def get_vocal_features(request: VoiceAnalysisRequest):
-    # ONNX 모델 경로 (convert_to_onnx_aihub.py에서 사용한 경로)
-    model_path = "weights/model_aihub.onnx"
-    
-    if not os.path.exists(model_path):
-        raise HTTPException(status_code=503, detail=f"AI 모델 파일을 찾을 수 없습니다: {model_path}")
-
-    # 1. S3 URI에서 오디오 파일 다운로드
-    try:
-        response = requests.get(request.s3_uri, timeout=30)
-        response.raise_for_status()
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"S3 파일 요청 실패: {str(e)}")
-
-    tmp_file_path = None
-    try:
-        # 임시 파일 저장
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp_file:
-            tmp_file.write(response.content)
-            tmp_file_path = tmp_file.name
-
-        # 2. 예측 수행
-        predictor = VocalFeaturePredictorONNX(model_path=model_path)
-        # predict_ratios는 {"bending": 30.0, "vibrt": 40.0, "breath": 50.0} 형태를 반환
-        result_ratios = predictor.predict_ratios(tmp_file_path)
-
-        # 3. 응답 모델에 맞게 데이터 구성
-        return VocalFeaturesResponse(
-            status=200,
-            message="발성 특징 분석이 완료되었습니다.",
-            data=VocalFeaturesResponseData(
-                bending=result_ratios['bending'],
-                vibrt=result_ratios['vibrt'],
-                breath=result_ratios['breath']
-            )
-        )
-
-    except ValueError as ve:
-        raise HTTPException(status_code=422, detail=str(ve))
-    except RuntimeError as re:
-        # ONNX 예측 실패 (전처리, ONNX 실행 등 오류)
-        raise HTTPException(status_code=500, detail=f"AI 예측 시스템 오류: {str(re)}")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"서버 처리 오류: {str(e)}")
-    finally:
-        # 임시 파일 정리
-        if tmp_file_path and os.path.exists(tmp_file_path):
-            os.remove(tmp_file_path)

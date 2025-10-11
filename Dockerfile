@@ -9,7 +9,5 @@ COPY api/ ./api/
 COPY inference/predict_tags_occx.py ./inference/predict_tags_occx.py
 COPY inference/audio_processor.py ./inference/audio_processor.py
 COPY weights/model.onnx ./weights/model.onnx
-COPY inference/predict_tags_onnx_aihub.py ./inference/predict_tags_onnx_aihub.py
-COPY weights/model_aihub.onnx ./weights/model_aihub.onnx
 
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
