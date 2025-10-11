@@ -1,3 +1,4 @@
 *
 !.gitignore
 !model.onnx
+!model_aihub.onnx
